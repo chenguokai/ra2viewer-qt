@@ -126,10 +126,43 @@ char *getUnit(int i, int unit, bool isAlly) {
             sprintf(unitBuf, "%d", SOVCONSCRIPTcount[i]);
         }
         break;
+        case 7:
+        if (isAlly) {
+            sprintf(unitBuf, "%d", ALLIBOATcount[i]);
+        } else {
+            sprintf(unitBuf, "%d", SOVBOATcount[i]);
+        }
+        break;
+        case 8:
+        if (isAlly) {
+            sprintf(unitBuf, "%d", ALLIFISHcount[i]);
+        } else {
+            sprintf(unitBuf, "%d", SOVFISHcount[i]);
+        }
+        break;
+        case 9:
+        if (isAlly) {
+            sprintf(unitBuf, "%d", ALLICARRIERcount[i]);
+        } else {
+            sprintf(unitBuf, "%d", SOVCARRIERcount[i]);
+        }
+        break;
     }
 
 
     return unitBuf;
+}
+
+void MainWindow::mousePressEvent(QMouseEvent *event) {
+    if (event->button() == Qt::LeftButton)
+        last_mouse_position = event->globalPos();
+}
+void MainWindow::mouseMoveEvent(QMouseEvent *event) {
+    if (!event->buttons().testFlag(Qt::LeftButton))
+        return;
+    const QPoint position = pos() + event->globalPos() - last_mouse_position; //the position of mainfrmae + (current_mouse_position - last_mouse_position)
+    move(position.x(), position.y());
+    last_mouse_position = event->globalPos();
 }
 
 void MainWindow::v1ButtonClicked() {
@@ -208,7 +241,7 @@ void MainWindow::updateData() {
             else
                 palette.setColor(m_LabelInfo[totValid][3]->foregroundRole(), Qt::red);
             m_LabelInfo[totValid][3]->setPalette(palette);
-            for (int j = 0; j < 7; j++) {
+            for (int j = 0; j < 10; j++) {
                 imageItem[totValid][j]->setText(getUnit(i, j, getSide(i)));
 
 
@@ -254,6 +287,24 @@ void MainWindow::updateData() {
                         imageItem[totValid][j]->setIcon(QIcon("./allysoldier.png"));
                     else
                         imageItem[totValid][j]->setIcon(QIcon("./sovsoldier.png"));
+                    break;
+                case 7:
+                    if (getSide(i))
+                        imageItem[totValid][j]->setIcon(QIcon("./allyboat.png"));
+                    else
+                        imageItem[totValid][j]->setIcon(QIcon("./sovboat.png"));
+                    break;
+                case 8:
+                    if (getSide(i))
+                        imageItem[totValid][j]->setIcon(QIcon("./allyfish.png"));
+                    else
+                        imageItem[totValid][j]->setIcon(QIcon("./sovfish.png"));
+                    break;
+                case 9:
+                    if (getSide(i))
+                        imageItem[totValid][j]->setIcon(QIcon("./allycv.png"));
+                    else
+                        imageItem[totValid][j]->setIcon(QIcon("./sovcv.png"));
                     break;
                 }
             }
@@ -353,7 +404,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 
     for (int players = 0; players < 4; players++) {
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < 10; i++) {
             imageItem[players][i] = new QListWidgetItem;
 
             imageItem[players][i]->setText("BEIJING");
@@ -381,6 +432,15 @@ MainWindow::MainWindow(QWidget *parent)
                 imageItem[players][i]->setIcon(QIcon("./ifv.png"));
                 break;
             case 6:
+                imageItem[players][i]->setIcon(QIcon("./allysoldier.png"));
+                break;
+            case 7:
+                imageItem[players][i]->setIcon(QIcon("./allysoldier.png"));
+                break;
+            case 8:
+                imageItem[players][i]->setIcon(QIcon("./allysoldier.png"));
+                break;
+            case 9:
                 imageItem[players][i]->setIcon(QIcon("./allysoldier.png"));
                 break;
             }

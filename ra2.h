@@ -45,4 +45,13 @@ extern unsigned SOVCONSCRIPTcount[MAXPLAYERS];
 
 extern struct ColorStruct playerColor[MAXPLAYERS];
 extern unsigned color[MAXPLAYERS];
+
+extern unsigned ALLIBOATcount[MAXPLAYERS];
+extern unsigned SOVBOATcount[MAXPLAYERS];
+
+extern unsigned ALLIFISHcount[MAXPLAYERS];
+extern unsigned SOVFISHcount[MAXPLAYERS];
+
+extern unsigned ALLICARRIERcount[MAXPLAYERS];
+extern unsigned SOVCARRIERcount[MAXPLAYERS];
 #endif // RA2_H

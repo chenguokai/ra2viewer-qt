@@ -21,13 +21,17 @@ public:
 private:
     Ui::MainWindow *ui;
 
+    QPoint last_mouse_position;
+
     QLabel *m_LabelInfo[4][4];
-    QListWidgetItem *imageItem[4][7];
+    QListWidgetItem *imageItem[4][10];
 
     void enterEvent(QEvent *);
     void leaveEvent(QEvent *);
     int hotkeyid;
     bool nativeEvent(const QByteArray &eventType, void *message, long *result) __attribute__((thiscall));
+    void mousePressEvent(QMouseEvent *event)__attribute__((thiscall));
+    void mouseMoveEvent(QMouseEvent *event)__attribute__((thiscall));
 
 private slots:
     void v1ButtonClicked();

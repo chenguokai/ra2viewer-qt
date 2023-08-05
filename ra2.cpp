@@ -67,11 +67,29 @@
 #define CONSCRIPTOFFSET 0x01
 #define GIOFFSET 0x0
 
+#define SUBMARINEOFFSET		0x13
+#define DESTROYEROFFSET		0x12
+
+#define DOPHINOFFSET		0x19
+#define SQUIDOFFSET			0x18
+
+#define CVOFFSET			0x0d	// aircraft carrier
+#define DREADNOUGHTOFFSET	0x16    // SOV
+
 unsigned ALLIFlycount[MAXPLAYERS];
 unsigned SOVSpidercount[MAXPLAYERS];
 unsigned ALLIIFVcount[MAXPLAYERS];
 unsigned SOVIFVcount[MAXPLAYERS];
 unsigned SOVCONSCRIPTcount[MAXPLAYERS];
+
+unsigned ALLIBOATcount[MAXPLAYERS];
+unsigned SOVBOATcount[MAXPLAYERS];
+
+unsigned ALLIFISHcount[MAXPLAYERS];
+unsigned SOVFISHcount[MAXPLAYERS];
+
+unsigned ALLICARRIERcount[MAXPLAYERS];
+unsigned SOVCARRIERcount[MAXPLAYERS];
 
 unsigned counts[0x2000];
 
@@ -132,6 +150,7 @@ unsigned playerColorPtr[MAXPLAYERS];
 struct ColorStruct playerColor[MAXPLAYERS];
 
 bool validPlayer[MAXPLAYERS];
+
 
 
 const char *allieCountries[] = {
@@ -457,6 +476,55 @@ void ReadClassBase() {
                               4,
                               NULL);
             printf("Player %d Sov Miner count %u\n", i, SOVMinerCount[i]);
+
+            // ALLIShip
+            ReadProcessMemory(handle,
+                              (const void *)(itemArrayBase[i] + 4 * DESTROYEROFFSET),
+                              &ALLIBOATcount[i],
+                              4,
+                              NULL);
+            printf("Player %d Alli Boat count %u\n", i, ALLIBOATcount[i]);
+
+            // SOVShip
+            ReadProcessMemory(handle,
+                              (const void *)(itemArrayBase[i] + 4 * SUBMARINEOFFSET),
+                              &SOVBOATcount[i],
+                              4,
+                              NULL);
+            printf("Player %d Sov Boat count %u\n", i, SOVBOATcount[i]);
+
+            // ALLIFish
+            ReadProcessMemory(handle,
+                              (const void *)(itemArrayBase[i] + 4 * DOPHINOFFSET),
+                              &ALLIFISHcount[i],
+                              4,
+                              NULL);
+            printf("Player %d Alli Fish count %u\n", i, ALLIFISHcount[i]);
+
+            // SOVFish
+            ReadProcessMemory(handle,
+                              (const void *)(itemArrayBase[i] + 4 * SQUIDOFFSET),
+                              &SOVFISHcount[i],
+                              4,
+                              NULL);
+            printf("Player %d Sov Fish count %u\n", i, SOVFISHcount[i]);
+
+            // ALLICarrier
+            ReadProcessMemory(handle,
+                              (const void *)(itemArrayBase[i] + 4 * CVOFFSET),
+                              &ALLICARRIERcount[i],
+                              4,
+                              NULL);
+            printf("Player %d Alli CV count %u\n", i, ALLICARRIERcount[i]);
+
+            // SOVCarrier
+            ReadProcessMemory(handle,
+                              (const void *)(itemArrayBase[i] + 4 * DREADNOUGHTOFFSET),
+                              &SOVCARRIERcount[i],
+                              4,
+                              NULL);
+            printf("Player %d Sov CV count %u\n", i, SOVCARRIERcount[i]);
+
             /*
       for (int i = 0; i < 0x200; i++) {
         if (counts[i] == 9) {
