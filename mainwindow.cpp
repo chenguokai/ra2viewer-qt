@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
-#include <QListWidget.h>
+#include <QListWidget>
 #include <Qt>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
@@ -11,6 +11,7 @@
 #include <iostream>
 #include "ra2.h"
 #include <QString>
+#include "QMessageBox"
 
 #include <windows.h>
 // #include <QListWidgetItem.h>
@@ -166,11 +167,28 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event) {
 }
 
 void MainWindow::v1ButtonClicked() {
-    exit(0);
+    //exit(0);
+    QMessageBox msgBox;
+    msgBox.setText("RA2 viewer v4.1\n"
+                   "Project repo: https://github.com/chenguokai/ra2viewer-qt\n"
+                   );
+    msgBox.exec();
+
 }
 
 void MainWindow::v2ButtonClicked() {
-    exit(0);
+    //exit(0);
+    QMessageBox msgBox;
+    msgBox.setText("在使用本插件过程中可能会遇到一些问题，其对应的解释/解决方案如下：\n"
+                   "1. 插件能够正常启动但无法读取到单位信息：如果在对战平台使用插件，请确保插件以管理员权限启动，否则普通权限的程序无法获取到对战平台启动的红警游戏数据。\n"
+                   "2. 插件体积过大：插件窗口可以拖动，请拖动到合适的位置以减少遮挡。\n"
+                   "3. 游戏全屏后无法正常显示插件窗口：预期现象，请以窗口化方式启动游戏\n"
+                   "4. 插件过宽、过窄等显示不全问题：在本文件夹下有conf.txt文件，后两行的数字分别控制插件宽度和高度，请在运行时自行调整。\n"
+                   "调整宽度也可用于在纯陆战图手动隐藏海军单位显示。若不小心删除该配置文件或配置了错误设置导致插件无法启动，请在删除该文件后重新启动插件，插件会自动重新生成一份可用配置。\n"
+                   "5. 我希望把本插件发给其他人使用，要征得同意吗：不需要，只需要确保对方收到完整的软件及(本说明或项目完整代码)即可。\n"
+                   "6. 项目的代码在哪里：https://github.com/chenguokai/ra2viewer-qt 本项目的实现完全开源，欢迎贡献代码及提交bug。"
+                   );
+    msgBox.exec();
 }
 
 void MainWindow::exitButtonClicked() {
@@ -447,8 +465,8 @@ MainWindow::MainWindow(QWidget *parent)
         }
     }
 
-    QPushButton *v2Button = new QPushButton("2v2");
-    QPushButton *v1Button = new QPushButton("1v1");
+    QPushButton *v2Button = new QPushButton("帮助");
+    QPushButton *v1Button = new QPushButton("关于");
     QPushButton *exitButton = new QPushButton("Exit");
     connect ( v2Button, SIGNAL( clicked() ), this, SLOT( v2ButtonClicked() ) );
     connect ( v1Button, SIGNAL( clicked() ), this, SLOT( v1ButtonClicked() ) );

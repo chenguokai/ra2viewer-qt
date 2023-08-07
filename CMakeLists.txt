@@ -40,9 +40,12 @@ else()
             ${PROJECT_SOURCES}
             ra2.cpp
             ra2.h
+            icon.rc
         )
     endif()
 endif()
+
+set(app_icon_resource_windows "${CMAKE_CURRENT_SOURCE_DIR}/icon.rc")
 
 target_link_libraries(ra2viewer PRIVATE Qt${QT_VERSION_MAJOR}::Widgets pthread)
 

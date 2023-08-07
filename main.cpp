@@ -5,11 +5,12 @@
 #include <iostream>
 #include <pthread.h>
 #include <Qt>
+#include "ra2.h"
 
 void createConf() {
     FILE *fp = std::fopen("./conf.txt", "w");
     std::fprintf(fp, "400 # modify this to adjust where the frame is\n");
-    std::fprintf(fp, "700 # modify this to adjust the frame width\n");
+    std::fprintf(fp, "850 # modify this to adjust the frame width\n");
     std::fprintf(fp, "300 # modify this to adjust the frame height\n");
     fclose(fp);
 }
@@ -34,6 +35,32 @@ void loadConf() {
     printf("pos %d width %d height %d", position, width, height);
 }
 
+#include <time.h>
+FILE *logger;
+extern bool currentGameRunning;
+extern bool isWinner[MAXPLAYERS];
+extern bool isLoser[MAXPLAYERS];
+bool prevGameRunning = false;
+void updateLog() {
+    // record game status
+    time_t ltime;
+    time(&ltime);
+    if (!currentGameRunning && prevGameRunning) {
+        // just end a game
+        fprintf(logger, "time %s ", ctime(&ltime));
+        for (int i = 0; i < 8; i++) {
+            if (validPlayer[i]) {
+                fprintf(logger, "Player %ls Win %d Lose %d", UserName[i], isWinner[i], isLoser[i]);
+            }
+        }
+        fprintf(logger, "\n");
+        fflush(logger);
+    }
+    prevGameRunning = currentGameRunning;
+
+
+}
+
 class MyTimer : public QObject
 {
     Q_OBJECT
@@ -46,6 +73,7 @@ public slots:
         //mainwin->activateWindow();
         mainwin->resize(width, height);
         mainwin->show();
+        updateLog();
         //mainwin->
     }
 
@@ -77,6 +105,7 @@ public:
 void* ra2_main(void* arg);
 int main(int argc, char *argv[])
 {
+    logger = fopen("gamelog.txt", "a");
     loadConf();
     QApplication a(argc, argv);
     MainWindow w;

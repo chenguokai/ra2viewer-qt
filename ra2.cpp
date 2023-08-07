@@ -151,7 +151,7 @@ struct ColorStruct playerColor[MAXPLAYERS];
 
 bool validPlayer[MAXPLAYERS];
 
-
+bool currentGameRunning;
 
 const char *allieCountries[] = {
     "Americans",
@@ -405,12 +405,7 @@ void ReadClassBase() {
                               &ALLIFlycount[i],
                               4,
                               NULL);
-            // spider
-            ReadProcessMemory(handle,
-                              (const void *)(itemArrayBase[i] + 4 * SPIDEROFFSET),
-                              &SOVSpidercount[i],
-                              4,
-                              NULL);
+
 
 
             // ALLIDOG
@@ -461,6 +456,12 @@ void ReadClassBase() {
                               4,
                               NULL);
             printf("Player %d Sov Tank count %u AlliTank count %u\n", i, SOVTANKcount[i], ALLITANKcount[i]);
+            // spider
+            ReadProcessMemory(handle,
+                              (const void *)(itemArrayBase[i] + 4 * SPIDEROFFSET),
+                              &SOVSpidercount[i],
+                              4,
+                              NULL);
 
             // ALLIMiner
             ReadProcessMemory(handle,
@@ -544,11 +545,15 @@ void ReadClassBase() {
 
 
 void* ra2_main(void* arg) {
-    while (!findPidByName("gamemd-spawn.exe")) {
-        printf("Waiting game process\n");
-        Sleep(1000);
-    }
+
     while (1) {
+        if (!findPidByName("gamemd-spawn.exe")) {
+            currentGameRunning = false;
+            Sleep(1000);
+            continue;
+        }
+        currentGameRunning = true;
+
         ReadClassBase();
         Sleep(1000); // sleep 1s
     }
